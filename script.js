@@ -19,7 +19,7 @@ form.addEventListener('submit', async (e) => {
 });
 
 async function fetchWeather(city) {
-  const url = `https://api.openweathermap.org/data/2.5/weather?q=${encodeURIComponent(city)}&appid=${API_KEY}&units=metric`;
+  const url = `https://api.openweathermap.org/data/2.5/weather?q=${encodeURIComponent(city)}&appid=${"4bb2b6030d7f51fcbc04a9f99f73e933"}&units=metric`;
 
   const response = await fetch(url);
   if (!response.ok) {
