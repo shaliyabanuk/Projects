@@ -1,45 +1,59 @@
-const form = document.getElementById('weather-form');
-const input = document.getElementById('city-input');
-const result = document.getElementById('weather-result');
+const apiKey = 'a1b1ecabd2a6ce2434ed71de853f301a';
+const apiUrl = 'https://api.openweathermap.org/data/2.5/weather?units=metric&q=';
 
-const API_KEY = '4bb2b6030d7f51fcbc04a9f99f73e933E'; // 🔑 Replace with your OpenWeather API key
+const searchBox = document.querySelector('.search input');
+const searchBtn = document.querySelector('.search button');
 
-form.addEventListener('submit', async (e) => {
-  e.preventDefault();
-  const city = input.value.trim();
-  if (city === '') return;
+var weatherIcon = document.querySelector('.weather-icon');
+var cityElement = document.querySelector('.city');
+var tempElement = document.querySelector('.temp');
+var humidityElement = document.querySelector('.humidity');
+var windElement = document.querySelector('.wind');
+var weatherDetails = document.querySelector('.weather-details');
+weatherDetails.style.display = 'none';
 
-  try {
-    result.innerHTML = 'Loading...';
-    const weather = await fetchWeather(city);
-    displayWeather(weather);
-  } catch (error) {
-    result.innerHTML = `<p style="color:red;">${error.message}</p>`;
-  }
+async function checkWeather(city) {
+    if (!city) {
+       
+        weatherDetails.style.display = 'none';
+        return;
+    }
+    
+    const response = await fetch(apiUrl + city + `&appid=${'a1b1ecabd2a6ce2434ed71de853f301a'}`);
+    var data = await response.json();
+
+    if (data.cod === 200) {
+        weatherDetails.style.display = 'block'; 
+
+       
+        cityElement.innerHTML = data.name;
+        tempElement.innerHTML = Math.round(data.main.temp) + '°C';
+        humidityElement.innerHTML = data.main.humidity + '%';
+        windElement.innerHTML = data.wind.speed + ' km/h';
+
+        if (data.weather[0].main === 'Clouds') {
+            weatherIcon.src = 'assets/img/cloudy-forecast.svg';
+        } else if (data.weather[0].main === 'Clear') {
+            weatherIcon.src = 'assets/img/sunny-side-up-breakfast.svg';
+        } else if (data.weather[0].main === 'Rain') {
+            weatherIcon.src = 'assets/img/rainy.png';
+        } else if (data.weather[0].main === 'Drizzle') {
+            weatherIcon.src = 'assets/img/cloudy-drizzle.png';
+        } else if (data.weather[0].main === 'Mist') {
+            weatherIcon.src = 'assets/img/mist.svg';
+        } else if (data.weather[0].main === 'Snow') {
+            weatherIcon.src = 'assets/img/snowing-weather.svg';
+        }
+    } else {
+        weatherDetails.style.display = 'none';
+        alert("City not found!");
+    }
+}
+searchBtn.addEventListener('click', () => {
+    checkWeather(searchBox.value);
 });
-
-async function fetchWeather(city) {
-  const url = `https://api.openweathermap.org/data/2.5/weather?q=${encodeURIComponent(city)}&appid=${"4bb2b6030d7f51fcbc04a9f99f73e933"}&units=metric`;
-
-  const response = await fetch(url);
-  if (!response.ok) {
-    throw new Error('City not found or API error');
-  }
-
-  const data = await response.json();
-  return {
-    name: data.name,
-    temp: data.main.temp,
-    description: data.weather[0].description,
-    icon: `https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`
-  };
-}
-
-function displayWeather(weather) {
-  result.innerHTML = `
-    <h2>${weather.name}</h2>
-    <img src="${weather.icon}" alt="${weather.description}" />
-    <p><strong>${weather.temp}°C</strong></p>
-    <p>${weather.description}</p>
-  `;
-}
+searchBox.addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') {
+        checkWeather(searchBox.value);
+    }
+});
