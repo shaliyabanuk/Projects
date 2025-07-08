@@ -1,19 +1,42 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>Weather App</title>
-  <link rel="stylesheet" href="style.css" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather App</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div class="container">
-    <h1>🌤️ Weather App</h1>
-    <form id="weather-form">
-      <input type="text" id="city-input" placeholder="Enter city..." required />
-      <button type="submit">Get Weather</button>
-    </form>
-    <div id="weather-result"></div>
-  </div>
-  <script src="script.js"></script>
+    <div class="title">
+        <h1>Weather App</h1>
+    </div>
+    <div class="card">
+        <div class="search">
+            <input type="text" placeholder="Enter city" id="city-search" />
+            <button id="search-button">
+                <img src="assets/img/search.svg" alt="Search">
+            </button>
+        </div>
+        <div class="weather-details" style="display: none;">
+            <div class="city"></div>
+            <div class="weather">
+                <h1 class="temp"></h1>
+                <h2 class="description"></h2>
+            </div>
+            <img class="weather-icon" src="" alt="Weather icon">
+            <div class="details">
+                <div class="col">
+                    <img src="assets/img/humidity.webp" alt="Humidity icon" />
+                    <span class="humidity"></span>
+                </div>
+                <div class="col">
+                    <img src="assets/img/wind-6.png" alt="Wind icon" />
+                    <span class="wind"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script>
 </body>
 </html>
